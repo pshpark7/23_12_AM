@@ -6,6 +6,7 @@ import java.util.Scanner;
 
 public class Main {
 	static List<Article> articles = new ArrayList<>();
+	static List<Member> members = new ArrayList<>();
 
 	public static void main(String[] args) {
 		System.out.println("== 프로그램 시작 == ");
@@ -13,7 +14,8 @@ public class Main {
 		makeTestData();
 
 		Scanner sc = new Scanner(System.in);
-
+		
+		int lastMemberId = 0;
 		int lastArticleId = 3;
 
 		while (true) {
@@ -164,14 +166,49 @@ public class Main {
 				foundArticle.setTitle(newTitle);
 				foundArticle.setBody(newBody);
 				System.out.println(id + "번 글이 수정되었습니다.");
+				
+			} else if(cmd.equals("member join")) {
+				System.out.println("==회원 가입==");
+				int id = lastMemberId + 1;
+				String loginId = null;
+				while (true) {
+					System.out.print("아이디 : ");
+					loginId = sc.nextLine();
+					if (isJoinableLoginId(loginId) == false) {
+						System.out.println("이미 사용중인 아이디 입니다.");
+						continue;
+					}
+					break;
+				}
+				System.out.print("비밀번호 : ");
+				String loginPw = sc.nextLine();
+				String regDate = Util.getNowDate_TimeStr();
+				System.out.print("이름 : ");
+				String name = sc.nextLine();
+				
+				Member member = new Member(id, loginId, loginPw, regDate, name);
+				members.add(member);
+				System.out.printf("%d번째 회원이 가입되었습니다.\n", id);
+				lastMemberId++;
+				
 			} else {
 				System.out.println("사용할 수 없는 명령어입니다");
 			}
+				
+			
 		}
 
 		System.out.println("== 프로그램 끝 == ");
 
 		sc.close();
+	}
+
+	private static boolean isJoinableLoginId(String loginId) {
+		for (Member member : members) {
+			if(member.getLoginId().equals(loginId))
+			return false;
+		}
+		return true;
 	}
 
 	private static Article getArticleById(int id) {
@@ -262,4 +299,50 @@ class Article {
 	public void setHit(int hit) {
 		this.hit = hit;
 	}
+}
+class Member {
+	private int id;
+	private String loginId;
+	private String loginPw;
+	private String regDate;
+	private String name;
+	
+	public Member(int id, String loginId, String loginPw, String regDate, String name) {
+		this.id = id;
+		this.loginId = loginId;
+		this.loginPw = loginPw;
+		this.regDate = regDate;
+		this.name = name;
+	}
+	public int getId() {
+		return id;
+	}
+	public void setId(int id) {
+		this.id = id;
+	}
+	public String getLoginId() {
+		return loginId;
+	}
+	public void setLoginId(String loginId) {
+		this.loginId = loginId;
+	}
+	public String getLoginPw() {
+		return loginPw;
+	}
+	public void setLoginPw(String loginPw) {
+		this.loginPw = loginPw;
+	}
+	public String getRegDate() {
+		return regDate;
+	}
+	public void setRegDate(String regDate) {
+		this.regDate = regDate;
+	}
+	public String getName() {
+		return name;
+	}
+	public void setName(String name) {
+		this.name = name;
+	}
+
 }
