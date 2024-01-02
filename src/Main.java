@@ -1,6 +1,5 @@
 
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Scanner;
 
@@ -14,7 +13,7 @@ public class Main {
 		makeTestData();
 
 		Scanner sc = new Scanner(System.in);
-		
+
 		int lastMemberId = 0;
 		int lastArticleId = 3;
 
@@ -166,8 +165,8 @@ public class Main {
 				foundArticle.setTitle(newTitle);
 				foundArticle.setBody(newBody);
 				System.out.println(id + "번 글이 수정되었습니다.");
-				
-			} else if(cmd.equals("member join")) {
+
+			} else if (cmd.equals("member join")) {
 				System.out.println("==회원 가입==");
 				int id = lastMemberId + 1;
 				String loginId = null;
@@ -180,22 +179,30 @@ public class Main {
 					}
 					break;
 				}
+				String loginPw = null;
 				System.out.print("비밀번호 : ");
-				String loginPw = sc.nextLine();
+				loginPw = sc.nextLine();				
+				while (true) {
+					System.out.print("비밀번호 확인 : ");
+					String CheckPw = sc.nextLine();
+					if (CheckPw.equals(loginPw) == false) {
+						System.out.print("비밀번호가 일치하지 않습니다.\n");
+						continue;
+					}
+					break;
+				}
 				String regDate = Util.getNowDate_TimeStr();
 				System.out.print("이름 : ");
 				String name = sc.nextLine();
-				
 				Member member = new Member(id, loginId, loginPw, regDate, name);
 				members.add(member);
 				System.out.printf("%d번째 회원이 가입되었습니다.\n", id);
 				lastMemberId++;
-				
+
 			} else {
 				System.out.println("사용할 수 없는 명령어입니다");
 			}
-				
-			
+
 		}
 
 		System.out.println("== 프로그램 끝 == ");
@@ -205,8 +212,8 @@ public class Main {
 
 	private static boolean isJoinableLoginId(String loginId) {
 		for (Member member : members) {
-			if(member.getLoginId().equals(loginId))
-			return false;
+			if (member.getLoginId().equals(loginId))
+				return false;
 		}
 		return true;
 	}
@@ -300,13 +307,14 @@ class Article {
 		this.hit = hit;
 	}
 }
+
 class Member {
 	private int id;
 	private String loginId;
 	private String loginPw;
 	private String regDate;
 	private String name;
-	
+
 	public Member(int id, String loginId, String loginPw, String regDate, String name) {
 		this.id = id;
 		this.loginId = loginId;
@@ -314,33 +322,43 @@ class Member {
 		this.regDate = regDate;
 		this.name = name;
 	}
+
 	public int getId() {
 		return id;
 	}
+
 	public void setId(int id) {
 		this.id = id;
 	}
+
 	public String getLoginId() {
 		return loginId;
 	}
+
 	public void setLoginId(String loginId) {
 		this.loginId = loginId;
 	}
+
 	public String getLoginPw() {
 		return loginPw;
 	}
+
 	public void setLoginPw(String loginPw) {
 		this.loginPw = loginPw;
 	}
+
 	public String getRegDate() {
 		return regDate;
 	}
+
 	public void setRegDate(String regDate) {
 		this.regDate = regDate;
 	}
+
 	public String getName() {
 		return name;
 	}
+
 	public void setName(String name) {
 		this.name = name;
 	}
