@@ -25,10 +25,6 @@ public class ArticleController extends Controller {
 
 		switch (actionMethodName) {
 		case "write":
-			if (isLogined() == false) {
-				System.out.println("로그인 하고 이용해");
-				break;
-			}
 			doWrite();
 			break;
 		case "list":
@@ -38,17 +34,9 @@ public class ArticleController extends Controller {
 			showDetail();
 			break;
 		case "modify":
-			if (isLogined() == false) {
-				System.out.println("로그인 하고 이용해");
-				break;
-			}
 			doModify();
 			break;
 		case "delete":
-			if (isLogined() == false) {
-				System.out.println("로그인 하고 이용해");
-				break;
-			}
 			doDelete();
 			break;
 		default:
@@ -168,6 +156,12 @@ public class ArticleController extends Controller {
 			System.out.printf("%d번 게시글은 없습니다\n", id);
 			return;
 		}
+
+		if (foundArticle.getMemberId() != loginedMember.getId()) {
+			System.out.println("권한 없음");
+			return;
+		}
+
 		articles.remove(foundArticle);
 		System.out.println(id + "번 글이 삭제되었습니다.");
 
@@ -189,6 +183,11 @@ public class ArticleController extends Controller {
 
 		if (foundArticle == null) {
 			System.out.printf("%d번 게시글은 없습니다\n", id);
+			return;
+		}
+
+		if (foundArticle.getMemberId() != loginedMember.getId()) {
+			System.out.println("권한 없음");
 			return;
 		}
 
